@@ -13,7 +13,26 @@ services:
       - ./nginx/logs/:/var/log/nginx
     links:
       - php-fpm
+
   php-fpm:
     build: ./php
     volumes:
       - ./www:/var/www/
+    links:
+      - db
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: sample_pass
+      POSTGRES_USER: sample_user
+      POSTGRES_DB: pososi
+    ports:
+      - "5432:5432"
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8081:8080
