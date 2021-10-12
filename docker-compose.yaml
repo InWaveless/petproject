@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  nginx:
+    image: nginx
+    ports:
+      - "8080:80"
+    environment:
+      - NGINX_HOST=pososi.pipku
+      - NGINX_PORT=80
+    volumes:
+      - ./nginx/hosts:/etc/nginx/conf.d
+      - ./www:/var/www
+      - ./nginx/logs/:/var/log/nginx
+    links:
+      - php-fpm
+  php-fpm:
+    build: ./php
+    volumes:
+      - ./www:/var/www/
