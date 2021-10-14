@@ -5,12 +5,10 @@
 
     class TestController
     {
-        public function number(): Response
+        public function index(): Response
         {
-            $number = random_int(0, 100);
-
             return new Response(
-                '<html><body>Lucky number: '.$number.'</body></html>'
+                '<html><body>Your new Home!</body></html>'
             );
         }
     }
