@@ -1,11 +1,11 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Hello React!</h1>
+        Welcome to AquiLink! Soon it will be awesome!
       </header>
     </div>
   );
