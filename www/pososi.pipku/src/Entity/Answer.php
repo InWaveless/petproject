@@ -22,7 +22,7 @@ class Answer
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Type;
+    private $type;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -57,12 +57,12 @@ class Answer
 
     public function getType(): ?string
     {
-        return $this->Type;
+        return $this->type;
     }
 
-    public function setType(string $Type): self
+    public function setType(string $type): self
     {
-        $this->Type = $Type;
+        $this->type = $type;
 
         return $this;
     }

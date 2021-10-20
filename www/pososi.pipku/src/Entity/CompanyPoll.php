@@ -70,10 +70,16 @@ class CompanyPoll
      */
     private $companyPollAnswers;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Company::class, mappedBy="company_poll_id")
+     */
+    private $companies;
+
     public function __construct()
     {
         $this->companyPollQuestions = new ArrayCollection();
         $this->companyPollAnswers = new ArrayCollection();
+        $this->companies = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -231,6 +237,36 @@ class CompanyPoll
             // set the owning side to null (unless already changed)
             if ($companyPollAnswer->getCompanyPollId() === $this) {
                 $companyPollAnswer->setCompanyPollId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Company[]
+     */
+    public function getCompanies(): Collection
+    {
+        return $this->companies;
+    }
+
+    public function addCompany(Company $company): self
+    {
+        if (!$this->companies->contains($company)) {
+            $this->companies[] = $company;
+            $company->setCompanyPollId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompany(Company $company): self
+    {
+        if ($this->companies->removeElement($company)) {
+            // set the owning side to null (unless already changed)
+            if ($company->getCompanyPollId() === $this) {
+                $company->setCompanyPollId(null);
             }
         }
 
