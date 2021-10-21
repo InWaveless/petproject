@@ -25,7 +25,7 @@ class Company
     /**
      * @ORM\ManyToOne(targetEntity=CompanyPoll::class, inversedBy="companies")
      */
-    private $company_poll_id;
+    private $company_poll;
 
     public function getId(): ?int
     {
@@ -44,14 +44,14 @@ class Company
         return $this;
     }
 
-    public function getCompanyPollId(): ?CompanyPoll
+    public function getCompanyPoll(): ?CompanyPoll
     {
-        return $this->company_poll_id;
+        return $this->company_poll;
     }
 
-    public function setCompanyPollId(?CompanyPoll $company_poll_id): self
+    public function setCompanyPoll(?CompanyPoll $company_poll): self
     {
-        $this->company_poll_id = $company_poll_id;
+        $this->company_poll = $company_poll;
 
         return $this;
     }

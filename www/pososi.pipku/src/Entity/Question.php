@@ -25,22 +25,22 @@ class Question
     private $title;
 
     /**
-     * @ORM\OneToMany(targetEntity=Poll::class, mappedBy="first_question_id", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Poll::class, mappedBy="first_question", orphanRemoval=true)
      */
     private $polls;
 
     /**
-     * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="question_id", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="question", orphanRemoval=true)
      */
     private $answers;
 
     /**
-     * @ORM\OneToMany(targetEntity=CompanyPollQuestion::class, mappedBy="question_id")
+     * @ORM\OneToMany(targetEntity=CompanyPollQuestion::class, mappedBy="question")
      */
     private $companyPollQuestions;
 
     /**
-     * @ORM\OneToMany(targetEntity=CompanyPollAnswer::class, mappedBy="question_id", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=CompanyPollAnswer::class, mappedBy="question", orphanRemoval=true)
      */
     private $companyPollAnswers;
 
@@ -81,7 +81,7 @@ class Question
     {
         if (!$this->polls->contains($poll)) {
             $this->polls[] = $poll;
-            $poll->setFirstQuestionId($this);
+            $poll->setFirstQuestion($this);
         }
 
         return $this;
@@ -91,8 +91,8 @@ class Question
     {
         if ($this->polls->removeElement($poll)) {
             // set the owning side to null (unless already changed)
-            if ($poll->getFirstQuestionId() === $this) {
-                $poll->setFirstQuestionId(null);
+            if ($poll->getFirstQuestion() === $this) {
+                $poll->setFirstQuestion(null);
             }
         }
 
@@ -111,7 +111,7 @@ class Question
     {
         if (!$this->answers->contains($answer)) {
             $this->answers[] = $answer;
-            $answer->setQuestionId($this);
+            $answer->setQuestion($this);
         }
 
         return $this;
@@ -121,8 +121,8 @@ class Question
     {
         if ($this->answers->removeElement($answer)) {
             // set the owning side to null (unless already changed)
-            if ($answer->getQuestionId() === $this) {
-                $answer->setQuestionId(null);
+            if ($answer->getQuestion() === $this) {
+                $answer->setQuestion(null);
             }
         }
 
@@ -141,7 +141,7 @@ class Question
     {
         if (!$this->companyPollQuestions->contains($companyPollQuestion)) {
             $this->companyPollQuestions[] = $companyPollQuestion;
-            $companyPollQuestion->setQuestionId($this);
+            $companyPollQuestion->setQuestion($this);
         }
 
         return $this;
@@ -151,8 +151,8 @@ class Question
     {
         if ($this->companyPollQuestions->removeElement($companyPollQuestion)) {
             // set the owning side to null (unless already changed)
-            if ($companyPollQuestion->getQuestionId() === $this) {
-                $companyPollQuestion->setQuestionId(null);
+            if ($companyPollQuestion->getQuestion() === $this) {
+                $companyPollQuestion->setQuestion(null);
             }
         }
 
@@ -171,7 +171,7 @@ class Question
     {
         if (!$this->companyPollAnswers->contains($companyPollAnswer)) {
             $this->companyPollAnswers[] = $companyPollAnswer;
-            $companyPollAnswer->setQuestionId($this);
+            $companyPollAnswer->setQuestion($this);
         }
 
         return $this;
@@ -181,8 +181,8 @@ class Question
     {
         if ($this->companyPollAnswers->removeElement($companyPollAnswer)) {
             // set the owning side to null (unless already changed)
-            if ($companyPollAnswer->getQuestionId() === $this) {
-                $companyPollAnswer->setQuestionId(null);
+            if ($companyPollAnswer->getQuestion() === $this) {
+                $companyPollAnswer->setQuestion(null);
             }
         }
 

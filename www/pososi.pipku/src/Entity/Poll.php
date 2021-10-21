@@ -28,10 +28,10 @@ class Poll
      * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="polls")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $first_question_id;
+    private $first_question;
 
     /**
-     * @ORM\OneToMany(targetEntity=CompanyPoll::class, mappedBy="poll_id", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=CompanyPoll::class, mappedBy="poll", orphanRemoval=true)
      */
     private $companyPolls;
 
@@ -57,14 +57,14 @@ class Poll
         return $this;
     }
 
-    public function getFirstQuestionId(): ?Question
+    public function getFirstQuestion(): ?Question
     {
-        return $this->first_question_id;
+        return $this->first_question;
     }
 
-    public function setFirstQuestionId(?Question $first_question_id): self
+    public function setFirstQuestion(?Question $first_question): self
     {
-        $this->first_question_id = $first_question_id;
+        $this->first_question = $first_question;
 
         return $this;
     }
@@ -81,7 +81,7 @@ class Poll
     {
         if (!$this->companyPolls->contains($companyPoll)) {
             $this->companyPolls[] = $companyPoll;
-            $companyPoll->setPollId($this);
+            $companyPoll->setPoll($this);
         }
 
         return $this;
@@ -91,8 +91,8 @@ class Poll
     {
         if ($this->companyPolls->removeElement($companyPoll)) {
             // set the owning side to null (unless already changed)
-            if ($companyPoll->getPollId() === $this) {
-                $companyPoll->setPollId(null);
+            if ($companyPoll->getPoll() === $this) {
+                $companyPoll->setPoll(null);
             }
         }
 

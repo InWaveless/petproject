@@ -33,15 +33,15 @@ class Answer
      * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="answers")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $question_id;
+    private $question;
 
     /**
      * @ORM\ManyToOne(targetEntity=Question::class)
      */
-    private $question_next_id;
+    private $question_next;
 
     /**
-     * @ORM\OneToMany(targetEntity=CompanyPollAnswer::class, mappedBy="answer_id", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=CompanyPollAnswer::class, mappedBy="answer", orphanRemoval=true)
      */
     private $companyPollAnswers;
 
@@ -79,26 +79,26 @@ class Answer
         return $this;
     }
 
-    public function getQuestionId(): ?Question
+    public function getQuestion(): ?Question
     {
-        return $this->question_id;
+        return $this->question;
     }
 
-    public function setQuestionId(?Question $question_id): self
+    public function setQuestion(?Question $question): self
     {
-        $this->question_id = $question_id;
+        $this->question = $question;
 
         return $this;
     }
 
-    public function getQuestionNextId(): ?Question
+    public function getQuestionNext(): ?Question
     {
-        return $this->question_next_id;
+        return $this->question_next;
     }
 
-    public function setQuestionNextId(?Question $question_next_id): self
+    public function setQuestionNext(?Question $question_next): self
     {
-        $this->question_next_id = $question_next_id;
+        $this->question_next = $question_next;
 
         return $this;
     }
@@ -115,7 +115,7 @@ class Answer
     {
         if (!$this->companyPollAnswers->contains($companyPollAnswer)) {
             $this->companyPollAnswers[] = $companyPollAnswer;
-            $companyPollAnswer->setAnswerId($this);
+            $companyPollAnswer->setAnswer($this);
         }
 
         return $this;
@@ -125,8 +125,8 @@ class Answer
     {
         if ($this->companyPollAnswers->removeElement($companyPollAnswer)) {
             // set the owning side to null (unless already changed)
-            if ($companyPollAnswer->getAnswerId() === $this) {
-                $companyPollAnswer->setAnswerId(null);
+            if ($companyPollAnswer->getAnswer() === $this) {
+                $companyPollAnswer->setAnswer(null);
             }
         }
 

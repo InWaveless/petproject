@@ -20,15 +20,16 @@ class CompanyPoll
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity=Company::class)
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $company_id;
+    private $company;
 
     /**
      * @ORM\ManyToOne(targetEntity=Poll::class, inversedBy="companyPolls")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $poll_id;
+    private $poll;
 
     /**
      * @ORM\Column(type="datetime_immutable")
@@ -61,17 +62,17 @@ class CompanyPoll
     private $try_count;
 
     /**
-     * @ORM\OneToMany(targetEntity=CompanyPollQuestion::class, mappedBy="company_poll_id", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=CompanyPollQuestion::class, mappedBy="company_poll", orphanRemoval=true)
      */
     private $companyPollQuestions;
 
     /**
-     * @ORM\OneToMany(targetEntity=CompanyPollAnswer::class, mappedBy="company_poll_id", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=CompanyPollAnswer::class, mappedBy="company_poll", orphanRemoval=true)
      */
     private $companyPollAnswers;
 
     /**
-     * @ORM\OneToMany(targetEntity=Company::class, mappedBy="company_poll_id")
+     * @ORM\OneToMany(targetEntity=Company::class, mappedBy="company_poll")
      */
     private $companies;
 
@@ -87,26 +88,26 @@ class CompanyPoll
         return $this->id;
     }
 
-    public function getCompanyId(): ?int
+    public function getCompany(): ?Company
     {
-        return $this->company_id;
+        return $this->company;
     }
 
-    public function setCompanyId(int $company_id): self
+    public function setCompany(Company $company): self
     {
-        $this->company_id = $company_id;
+        $this->company = $company;
 
         return $this;
     }
 
-    public function getPollId(): ?Poll
+    public function getPoll(): ?Poll
     {
-        return $this->poll_id;
+        return $this->poll;
     }
 
-    public function setPollId(?Poll $poll_id): self
+    public function setPoll(?Poll $poll): self
     {
-        $this->poll_id = $poll_id;
+        $this->poll = $poll;
 
         return $this;
     }
@@ -195,7 +196,7 @@ class CompanyPoll
     {
         if (!$this->companyPollQuestions->contains($companyPollQuestion)) {
             $this->companyPollQuestions[] = $companyPollQuestion;
-            $companyPollQuestion->setCompanyPollId($this);
+            $companyPollQuestion->setCompanyPoll($this);
         }
 
         return $this;
@@ -205,8 +206,8 @@ class CompanyPoll
     {
         if ($this->companyPollQuestions->removeElement($companyPollQuestion)) {
             // set the owning side to null (unless already changed)
-            if ($companyPollQuestion->getCompanyPollId() === $this) {
-                $companyPollQuestion->setCompanyPollId(null);
+            if ($companyPollQuestion->getCompanyPoll() === $this) {
+                $companyPollQuestion->setCompanyPoll(null);
             }
         }
 
@@ -225,7 +226,7 @@ class CompanyPoll
     {
         if (!$this->companyPollAnswers->contains($companyPollAnswer)) {
             $this->companyPollAnswers[] = $companyPollAnswer;
-            $companyPollAnswer->setCompanyPollId($this);
+            $companyPollAnswer->setCompanyPoll($this);
         }
 
         return $this;
@@ -235,38 +236,8 @@ class CompanyPoll
     {
         if ($this->companyPollAnswers->removeElement($companyPollAnswer)) {
             // set the owning side to null (unless already changed)
-            if ($companyPollAnswer->getCompanyPollId() === $this) {
-                $companyPollAnswer->setCompanyPollId(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Company[]
-     */
-    public function getCompanies(): Collection
-    {
-        return $this->companies;
-    }
-
-    public function addCompany(Company $company): self
-    {
-        if (!$this->companies->contains($company)) {
-            $this->companies[] = $company;
-            $company->setCompanyPollId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCompany(Company $company): self
-    {
-        if ($this->companies->removeElement($company)) {
-            // set the owning side to null (unless already changed)
-            if ($company->getCompanyPollId() === $this) {
-                $company->setCompanyPollId(null);
+            if ($companyPollAnswer->getCompanyPoll() === $this) {
+                $companyPollAnswer->setCompanyPoll(null);
             }
         }
 
