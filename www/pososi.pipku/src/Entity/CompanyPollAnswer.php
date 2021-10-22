@@ -21,7 +21,7 @@ class CompanyPollAnswer
      * @ORM\ManyToOne(targetEntity=CompanyPoll::class, inversedBy="companyPollAnswers")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $company_poll;
+    private $companyPoll;
 
     /**
      * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="companyPollAnswers")
@@ -52,12 +52,12 @@ class CompanyPollAnswer
 
     public function getCompanyPoll(): ?CompanyPoll
     {
-        return $this->company_poll;
+        return $this->companyPoll;
     }
 
-    public function setCompanyPoll(?CompanyPoll $company_poll): self
+    public function setCompanyPoll(?CompanyPoll $companyPoll): self
     {
-        $this->company_poll = $company_poll;
+        $this->companyPoll = $companyPoll;
 
         return $this;
     }

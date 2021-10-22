@@ -28,7 +28,7 @@ class Poll
      * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="polls")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $first_question;
+    private $firstQuestion;
 
     /**
      * @ORM\OneToMany(targetEntity=CompanyPoll::class, mappedBy="poll", orphanRemoval=true)
@@ -59,12 +59,12 @@ class Poll
 
     public function getFirstQuestion(): ?Question
     {
-        return $this->first_question;
+        return $this->firstQuestion;
     }
 
-    public function setFirstQuestion(?Question $first_question): self
+    public function setFirstQuestion(?Question $firstQuestion): self
     {
-        $this->first_question = $first_question;
+        $this->firstQuestion = $firstQuestion;
 
         return $this;
     }

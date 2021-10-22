@@ -38,7 +38,7 @@ class Answer
     /**
      * @ORM\ManyToOne(targetEntity=Question::class)
      */
-    private $question_next;
+    private $questionNext;
 
     /**
      * @ORM\OneToMany(targetEntity=CompanyPollAnswer::class, mappedBy="answer", orphanRemoval=true)
@@ -93,12 +93,12 @@ class Answer
 
     public function getQuestionNext(): ?Question
     {
-        return $this->question_next;
+        return $this->questionNext;
     }
 
-    public function setQuestionNext(?Question $question_next): self
+    public function setQuestionNext(?Question $questionNext): self
     {
-        $this->question_next = $question_next;
+        $this->questionNext = $questionNext;
 
         return $this;
     }

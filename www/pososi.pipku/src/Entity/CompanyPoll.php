@@ -34,17 +34,17 @@ class CompanyPoll
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-    private $created_at;
+    private $createdAt;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-    private $updated_at;
+    private $updatedAt;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-    private $actual_before;
+    private $actualBefore;
 
     /**
      * @ORM\Column(type="boolean")
@@ -54,12 +54,12 @@ class CompanyPoll
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-    private $show_after;
+    private $showAfter;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $try_count;
+    private $tryCount;
 
     /**
      * @ORM\OneToMany(targetEntity=CompanyPollQuestion::class, mappedBy="company_poll", orphanRemoval=true)
@@ -70,11 +70,6 @@ class CompanyPoll
      * @ORM\OneToMany(targetEntity=CompanyPollAnswer::class, mappedBy="company_poll", orphanRemoval=true)
      */
     private $companyPollAnswers;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Company::class, mappedBy="company_poll")
-     */
-    private $companies;
 
     public function __construct()
     {
@@ -114,36 +109,36 @@ class CompanyPoll
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): self
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeImmutable $updated_at): self
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
     public function getActualBefore(): ?\DateTimeImmutable
     {
-        return $this->actual_before;
+        return $this->actualBefore;
     }
 
-    public function setActualBefore(\DateTimeImmutable $actual_before): self
+    public function setActualBefore(\DateTimeImmutable $actualBefore): self
     {
-        $this->actual_before = $actual_before;
+        $this->actualBefore = $actualBefore;
 
         return $this;
     }
@@ -162,24 +157,24 @@ class CompanyPoll
 
     public function getShowAfter(): ?\DateTimeImmutable
     {
-        return $this->show_after;
+        return $this->showAfter;
     }
 
-    public function setShowAfter(\DateTimeImmutable $show_after): self
+    public function setShowAfter(\DateTimeImmutable $showAfter): self
     {
-        $this->show_after = $show_after;
+        $this->showAfter = $showAfter;
 
         return $this;
     }
 
     public function getTryCount(): ?int
     {
-        return $this->try_count;
+        return $this->tryCount;
     }
 
-    public function setTryCount(int $try_count): self
+    public function setTryCount(int $tryCount): self
     {
-        $this->try_count = $try_count;
+        $this->tryCount = $tryCount;
 
         return $this;
     }
