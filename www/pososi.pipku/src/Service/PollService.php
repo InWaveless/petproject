@@ -12,6 +12,7 @@ use App\Model\CompanyPollAnswer as ModelCompanyPollAnswer;
 use App\Model\CompanyPollCloseRequest;
 use App\Model\CompanyPollCreateRequest;
 use App\Model\CompanyPollGetRequest;
+use App\Model\CompanyPollHistoryRequest;
 use App\Model\QuestionWithAnswers;
 use DateInterval;
 use DateTimeImmutable;
@@ -129,6 +130,26 @@ class PollService
             $companyPollAnswers[] = $companyPollAnswerEntity;
         }
         $this->saveAnswers($companyPollAnswers, $companyPollQuestion, $nextQuestions);
+    }
+
+    public function getAnsweredCompanyQuestions(CompanyPollHistoryRequest $companyPollHistory): ?array
+    {
+        $companyPoll = $this->entityManager->getRepository(CompanyPoll::class)->findOneBy(['id' => $companyPollHistory->companyPollId, 'company' => $companyPollHistory->companyId]);
+        return $this->entityManager->getRepository(CompanyPollQuestion::class)->findBy(['companyPoll' => $companyPoll, 'answered' => true]);
+    }
+
+    public function getQuestionsByAnswers(array $companyPollAnswers): array
+    {
+        foreach ($companyPollAnswers as $answer) {
+            $questions[] = $answer->getQuestion();
+        }
+
+        return $questions;
+    }
+
+    public function getCompanyAnswers(int $companyPollId, array $questions): array
+    {
+        return $this->entityManager->getRepository(CompanyPollAnswer::class)->findBy(['companyPoll' => $companyPollId, 'question' => $questions]);
     }
 
     private function retryCompanyPollLater(CompanyPoll $companyPoll): void {

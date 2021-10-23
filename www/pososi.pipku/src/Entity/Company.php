@@ -23,7 +23,7 @@ class Company
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=CompanyPoll::class, inversedBy="companies")
+     * @ORM\ManyToOne(targetEntity=CompanyPoll::class)
      */
     private $companyPoll;
 

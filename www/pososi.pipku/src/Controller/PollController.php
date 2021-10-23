@@ -7,6 +7,7 @@ use App\Model\CompanyPollAnswer;
 use App\Model\CompanyPollCloseRequest;
 use App\Model\CompanyPollCreateRequest;
 use App\Model\CompanyPollGetRequest;
+use App\Model\CompanyPollHistoryRequest;
 use App\Service\PollService;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -78,5 +79,32 @@ class PollController extends AbstractController
         $data->setAnswers(...$answers);
         $this->pollService->answerQuestion($data);
         return $this->json(['result' => true]);
+    }
+
+    public function companyPollHistory(Request $request): Response
+    {
+        $request = $request->toArray();
+        $companyId = $request['company_id'];
+        $pollId = $request['poll_id'];
+        $data = new CompanyPollHistoryRequest($pollId, $companyId);
+        $companyQuestions = $this->pollService->getAnsweredCompanyQuestions($data);
+        if (count($companyQuestions) === 0) {
+            return $this->json(['result' => []]);
+        };
+        $questions = $this->pollService->getQuestionsByAnswers($companyQuestions);
+        $companyAnswers = $this->pollService->getCompanyAnswers($data->companyPollId, $questions);
+        foreach ($questions as $question) {
+            foreach ($question->getAnswers() as $answer) {
+                $answers[] = ['id' => $answer->getId(), 'title' => $answer->getTitle(), 'type' => $answer->getType()];
+            };
+            foreach ($companyAnswers as $companyAnswer) {
+                if ($companyAnswer->getQuestion()->getId() === $question->getId()) {
+                    $mappedCompanyAnswers[] = ['id' => $companyAnswer->getAnswer()->getId(), 'data' => $companyAnswer->getMeta()];
+                };
+            };
+            $result[] = ['answers' => $answers, 'company_answers' => $mappedCompanyAnswers , 'question' => ['id' => $question->getId(), 'title' => $question->getTitle()]];
+        };
+        
+        return $this->json(['result' => $result]);
     }
 }

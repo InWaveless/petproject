@@ -25,7 +25,7 @@ class Poll
     private $title;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="polls")
+     * @ORM\ManyToOne(targetEntity=Question::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $firstQuestion;

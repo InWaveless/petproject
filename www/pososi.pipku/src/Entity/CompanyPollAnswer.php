@@ -18,19 +18,19 @@ class CompanyPollAnswer
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=CompanyPoll::class, inversedBy="companyPollAnswers")
+     * @ORM\ManyToOne(targetEntity=CompanyPoll::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $companyPoll;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="companyPollAnswers")
+     * @ORM\ManyToOne(targetEntity=Question::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $question;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Answer::class, inversedBy="companyPollAnswers")
+     * @ORM\ManyToOne(targetEntity=Answer::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $answer;

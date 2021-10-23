@@ -14,3 +14,7 @@ poll_answer:
    path: /poll/answer
    controller: App\Controller\PollController::companyPollAnswer
    methods: POST
+poll_history:
+   path: /poll/history
+   controller: App\Controller\PollController::companyPollHistory
+   methods: POST

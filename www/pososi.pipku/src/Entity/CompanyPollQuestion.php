@@ -18,13 +18,13 @@ class CompanyPollQuestion
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=CompanyPoll::class, inversedBy="companyPollQuestions")
+     * @ORM\ManyToOne(targetEntity=CompanyPoll::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $company_poll;
+    private $companyPoll;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="companyPollQuestions")
+     * @ORM\ManyToOne(targetEntity=Question::class)
      */
     private $question;
 
@@ -50,12 +50,12 @@ class CompanyPollQuestion
 
     public function getCompanyPoll(): ?CompanyPoll
     {
-        return $this->company_poll;
+        return $this->companyPoll;
     }
 
-    public function setCompanyPoll(?CompanyPoll $company_poll): self
+    public function setCompanyPoll(?CompanyPoll $companyPoll): self
     {
-        $this->company_poll = $company_poll;
+        $this->companyPoll = $companyPoll;
 
         return $this;
     }

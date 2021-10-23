@@ -40,11 +40,6 @@ class Answer
      */
     private $questionNext;
 
-    /**
-     * @ORM\OneToMany(targetEntity=CompanyPollAnswer::class, mappedBy="answer", orphanRemoval=true)
-     */
-    private $companyPollAnswers;
-
     public function __construct()
     {
         $this->companyPollAnswers = new ArrayCollection();
@@ -99,36 +94,6 @@ class Answer
     public function setQuestionNext(?Question $questionNext): self
     {
         $this->questionNext = $questionNext;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|CompanyPollAnswer[]
-     */
-    public function getCompanyPollAnswers(): Collection
-    {
-        return $this->companyPollAnswers;
-    }
-
-    public function addCompanyPollAnswer(CompanyPollAnswer $companyPollAnswer): self
-    {
-        if (!$this->companyPollAnswers->contains($companyPollAnswer)) {
-            $this->companyPollAnswers[] = $companyPollAnswer;
-            $companyPollAnswer->setAnswer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCompanyPollAnswer(CompanyPollAnswer $companyPollAnswer): self
-    {
-        if ($this->companyPollAnswers->removeElement($companyPollAnswer)) {
-            // set the owning side to null (unless already changed)
-            if ($companyPollAnswer->getAnswer() === $this) {
-                $companyPollAnswer->setAnswer(null);
-            }
-        }
 
         return $this;
     }

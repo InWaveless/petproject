@@ -61,16 +61,6 @@ class CompanyPoll
      */
     private $tryCount;
 
-    /**
-     * @ORM\OneToMany(targetEntity=CompanyPollQuestion::class, mappedBy="company_poll", orphanRemoval=true)
-     */
-    private $companyPollQuestions;
-
-    /**
-     * @ORM\OneToMany(targetEntity=CompanyPollAnswer::class, mappedBy="company_poll", orphanRemoval=true)
-     */
-    private $companyPollAnswers;
-
     public function __construct()
     {
         $this->companyPollQuestions = new ArrayCollection();
@@ -175,66 +165,6 @@ class CompanyPoll
     public function setTryCount(int $tryCount): self
     {
         $this->tryCount = $tryCount;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|CompanyPollQuestion[]
-     */
-    public function getCompanyPollQuestions(): Collection
-    {
-        return $this->companyPollQuestions;
-    }
-
-    public function addCompanyPollQuestion(CompanyPollQuestion $companyPollQuestion): self
-    {
-        if (!$this->companyPollQuestions->contains($companyPollQuestion)) {
-            $this->companyPollQuestions[] = $companyPollQuestion;
-            $companyPollQuestion->setCompanyPoll($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCompanyPollQuestion(CompanyPollQuestion $companyPollQuestion): self
-    {
-        if ($this->companyPollQuestions->removeElement($companyPollQuestion)) {
-            // set the owning side to null (unless already changed)
-            if ($companyPollQuestion->getCompanyPoll() === $this) {
-                $companyPollQuestion->setCompanyPoll(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|CompanyPollAnswer[]
-     */
-    public function getCompanyPollAnswers(): Collection
-    {
-        return $this->companyPollAnswers;
-    }
-
-    public function addCompanyPollAnswer(CompanyPollAnswer $companyPollAnswer): self
-    {
-        if (!$this->companyPollAnswers->contains($companyPollAnswer)) {
-            $this->companyPollAnswers[] = $companyPollAnswer;
-            $companyPollAnswer->setCompanyPoll($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCompanyPollAnswer(CompanyPollAnswer $companyPollAnswer): self
-    {
-        if ($this->companyPollAnswers->removeElement($companyPollAnswer)) {
-            // set the owning side to null (unless already changed)
-            if ($companyPollAnswer->getCompanyPoll() === $this) {
-                $companyPollAnswer->setCompanyPoll(null);
-            }
-        }
 
         return $this;
     }
