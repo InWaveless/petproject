@@ -10,7 +10,7 @@ use App\Entity\CompanyPollQuestion;
 use App\Entity\Poll;
 use App\Model\CompanyPollAnswer as ModelCompanyPollAnswer;
 use App\Model\CompanyPollCloseRequest;
-use App\Model\CompanyPollCreateRequest;
+use App\DTO\CompanyPollCreateRequest;
 use App\Model\CompanyPollGetRequest;
 use App\Model\CompanyPollHistoryRequest;
 use App\Model\QuestionWithAnswers;

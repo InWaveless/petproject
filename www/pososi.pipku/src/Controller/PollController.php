@@ -5,11 +5,14 @@ namespace App\Controller;
 use App\Model\Answer;
 use App\Model\CompanyPollAnswer;
 use App\Model\CompanyPollCloseRequest;
-use App\Model\CompanyPollCreateRequest;
+use App\DTO\CompanyPollCreateRequest;
 use App\Model\CompanyPollGetRequest;
 use App\Model\CompanyPollHistoryRequest;
 use App\Service\PollService;
 use DateTimeImmutable;
+use OpenApi\Annotations as OA;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use App\DTO\BooleanResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,13 +26,26 @@ class PollController extends AbstractController
         $this->pollService = $pollService;
     }
 
+    /**
+     * @OA\RequestBody(
+     *      required=true,
+     *      @Model(type=CompanyPollCreateRequest::class)
+     * )
+     * 
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns true if success",
+     *     @Model(type=BooleanResponse::class)
+     * )
+     * @OA\Tag(name="Polls")
+     */
     public function companyPollCreate(Request $request): Response
     {
         $request = $request->toArray();
         $companyIds = $request['company_ids'];
         $pollId = $request['poll_id'];
         $actualBefore = new DateTimeImmutable($request['actual_before']);
-        $data = new CompanyPollCreateRequest;
+        $data = new CompanyPollCreateRequest();
         $data->setCompanyIds(...$companyIds);
         $data->setPollId($pollId);
         $data->setActualBefore($actualBefore);
