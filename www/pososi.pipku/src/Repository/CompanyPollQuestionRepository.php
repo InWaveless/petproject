@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\CompanyPoll;
 use App\Entity\CompanyPollQuestion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -36,15 +37,15 @@ class CompanyPollQuestionRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?CompanyPollQuestion
+    public function findCurrentQuestion(CompanyPoll $companyPoll): ?CompanyPollQuestion
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('c.company_poll = :companyPoll')
+            ->andWhere('c.answered = false')
+            ->setParameter('companyPoll', $companyPoll)
+            ->orderBy('c.id')
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
 }

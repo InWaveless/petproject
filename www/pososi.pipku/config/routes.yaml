@@ -1,4 +1,16 @@
 poll_create:
    path: /poll/create
-   controller: App\Controller\PollController::pollCreate
+   controller: App\Controller\PollController::companyPollCreate
+   methods: POST
+poll_close:
+   path: /poll/close
+   controller: App\Controller\PollController::companyPollClose
+   methods: POST
+poll_get:
+   path: /poll/get
+   controller: App\Controller\PollController::companyPollGet
+   methods: POST
+poll_answer:
+   path: /poll/answer
+   controller: App\Controller\PollController::companyPollAnswer
    methods: POST
