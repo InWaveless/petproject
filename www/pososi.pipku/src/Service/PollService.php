@@ -11,13 +11,14 @@ use App\Entity\Poll;
 use App\Model\CompanyPollAnswer as ModelCompanyPollAnswer;
 use App\Model\CompanyPollCloseRequest;
 use App\DTO\CompanyPollCreateRequest;
-use App\Model\CompanyPollGetRequest;
+use App\DTO\CompanyPollGetRequest;
 use App\Model\CompanyPollHistoryRequest;
-use App\Model\QuestionWithAnswers;
+use App\DTO\QuestionWithAnswers;
 use DateInterval;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PollService
 {   
@@ -37,6 +38,9 @@ class PollService
         foreach ($pollCreateRequest->getCompanyIds() as $companyId) {
             $company = $this->entityManager->getRepository(Company::class)->find($companyId);
             $poll = $this->entityManager->getRepository(Poll::class)->find($pollCreateRequest->getPollId());
+            if (!$poll) {
+                throw new NotFoundHttpException("poll not found", null, 404);
+            }
             $companyPoll = new CompanyPoll;
             $companyPoll->setCompany($company);
             $companyPoll->setPoll($poll);

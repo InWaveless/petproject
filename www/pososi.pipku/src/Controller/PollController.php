@@ -6,13 +6,15 @@ use App\Model\Answer;
 use App\Model\CompanyPollAnswer;
 use App\Model\CompanyPollCloseRequest;
 use App\DTO\CompanyPollCreateRequest;
-use App\Model\CompanyPollGetRequest;
+use App\DTO\CompanyPollGetRequest;
+use App\DTO\QuestionWithAnswers;
 use App\Model\CompanyPollHistoryRequest;
 use App\Service\PollService;
 use DateTimeImmutable;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use App\DTO\BooleanResponse;
+use App\DTO\ErrorResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,6 +38,11 @@ class PollController extends AbstractController
      *     response=200,
      *     description="Returns true if success",
      *     @Model(type=BooleanResponse::class)
+     * )
+     *  @OA\Response(
+     *     response="default",
+     *     description="An unexpected error response.",
+     *     @Model(type=ErrorResponse::class)
      * )
      * @OA\Tag(name="Polls")
      */
@@ -64,6 +71,24 @@ class PollController extends AbstractController
         return $this->json(['result' => true]);
     }
 
+    /**
+     * @OA\RequestBody(
+     *      required=true,
+     *      @Model(type=CompanyPollGetRequest::class)
+     * )
+     * 
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns true if success",
+     *     @Model(type=QuestionWithAnswers::class)
+     * )
+     *  @OA\Response(
+     *     response="default",
+     *     description="An unexpected error response.",
+     *     @Model(type=ErrorResponse::class)
+     * )
+     * @OA\Tag(name="Polls")
+     */
     public function companyPollGet(Request $request): Response
     {
         $request = $request->toArray();
