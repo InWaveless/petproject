@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace App\DTO;
+namespace App\DTO\CompanyPollGet;
 
 use OpenApi\Annotations as OA;
 

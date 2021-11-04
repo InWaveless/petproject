@@ -9,7 +9,7 @@ class CompanyPollHistoryRequest
 {
     /**
      * 
-     * @OA\Property(property="company_poll_id")
+     * @OA\Property(property="poll_id")
      */
     public int $companyPollId;
 

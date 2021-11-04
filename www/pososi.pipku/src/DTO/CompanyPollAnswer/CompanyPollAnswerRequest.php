@@ -1,8 +1,7 @@
 <?php
 declare(strict_types=1);
-namespace App\DTO;
+namespace App\DTO\CompanyPollAnswer;
 
-use App\DTO\CompanyPollAnswer\Answer;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Annotation\Model;
 
@@ -12,7 +11,7 @@ class CompanyPollAnswerRequest
      * 
      * @OA\Property(
      *   type="array",
-     *   @OA\Items(ref=@Model(type=Answer::class))
+     *   @OA\Items(ref=@Model(type=CompanyPollAnswer::class))
      * )
      */
     private array $answers;
@@ -40,7 +39,7 @@ class CompanyPollAnswerRequest
         return $this->answers;
     }
 
-    public function setAnswers(Answer ...$answers): void
+    public function setAnswers(CompanyPollAnswer ...$answers): void
     {
         $this->answers = $answers;
     }

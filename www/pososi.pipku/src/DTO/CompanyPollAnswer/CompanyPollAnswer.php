@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace App\DTO\CompanyPollAnswer;
 
-class Answer
+class CompanyPollAnswer
 {
     public int $id;
 

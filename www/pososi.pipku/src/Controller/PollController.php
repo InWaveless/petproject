@@ -2,13 +2,11 @@
 
 namespace App\Controller;
 
-use App\DTO\Answer;
-use App\DTO\CompanyPollAnswer\Answer as DTOCompanyPollAnswer;
-use App\DTO\CompanyPollAnswerRequest;
+use App\DTO\CompanyPollAnswer\CompanyPollAnswer;
 use App\DTO\CompanyPollCloseRequest;
 use App\DTO\CompanyPollCreateRequest;
-use App\DTO\CompanyPollGetRequest;
-use App\DTO\CompanyPollGetResponse;
+use App\DTO\CompanyPollGet\CompanyPollGetRequest;
+use App\DTO\CompanyPollGet\CompanyPollGetResult;
 use App\DTO\CompanyPollHistory\CompanyPollHistoryRequest;
 use App\DTO\CompanyPollHistory\CompanyPollHistoryResult;
 use App\Service\PollService;
@@ -16,6 +14,7 @@ use DateTimeImmutable;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use App\DTO\BooleanResponse;
+use App\DTO\CompanyPollAnswer\CompanyPollAnswerRequest;
 use App\DTO\ErrorResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -100,7 +99,7 @@ class PollController extends AbstractController
      * @OA\Response(
      *     response=200,
      *     description="Returns true if success",
-     *     @Model(type=CompanyPollGetResponse::class)
+     *     @Model(type=CompanyPollGetResult::class)
      * )
      *  @OA\Response(
      *     response="default",
@@ -148,7 +147,7 @@ class PollController extends AbstractController
         $pollId = $request['poll_id'];
         $questionId = $request['question_id'];
         foreach ($request['answers'] as $answer) {
-            $answerObj = new DTOCompanyPollAnswer($answer['id'], $answer['data']);
+            $answerObj = new CompanyPollAnswer($answer['id'], $answer['data']);
             $answers[] = $answerObj;
         }
         $data = new CompanyPollAnswerRequest;

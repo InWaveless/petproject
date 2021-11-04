@@ -5,7 +5,7 @@ namespace App\DTO\CompanyPollHistory;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use App\DTO\Answer;
-use App\DTO\CompanyPollAnswer\Answer as CompanyPollAnswer;
+use App\DTO\CompanyPollAnswer\CompanyPollAnswer;
 use App\DTO\Question;
 
 class CompanyPollHistoryResponse

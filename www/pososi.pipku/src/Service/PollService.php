@@ -2,19 +2,18 @@
 declare(strict_types=1);
 namespace App\Service;
 
-use App\DTO\CompanyPollAnswerRequest;
+use App\DTO\CompanyPollAnswer\CompanyPollAnswerRequest;
 use App\Entity\Answer;
 use App\Entity\Company;
 use App\Entity\CompanyPoll;
 use App\Entity\CompanyPollAnswer;
 use App\Entity\CompanyPollQuestion;
 use App\Entity\Poll;
-use App\Model\CompanyPollAnswer as ModelCompanyPollAnswer;
 use App\DTO\CompanyPollCloseRequest;
 use App\DTO\CompanyPollCreateRequest;
-use App\DTO\CompanyPollGetRequest;
+use App\DTO\CompanyPollGet\CompanyPollGetRequest;
 use App\DTO\CompanyPollHistory\CompanyPollHistoryRequest;
-use App\DTO\CompanyPollGetResponse;
+use App\DTO\CompanyPollGet\CompanyPollGetResponse;
 use App\DTO\Question;
 use DateInterval;
 use DateTimeImmutable;
