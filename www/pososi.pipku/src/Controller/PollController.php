@@ -2,13 +2,15 @@
 
 namespace App\Controller;
 
-use App\Model\Answer;
-use App\Model\CompanyPollAnswer;
-use App\Model\CompanyPollCloseRequest;
+use App\DTO\Answer;
+use App\DTO\CompanyPollAnswer\Answer as DTOCompanyPollAnswer;
+use App\DTO\CompanyPollAnswerRequest;
+use App\DTO\CompanyPollCloseRequest;
 use App\DTO\CompanyPollCreateRequest;
 use App\DTO\CompanyPollGetRequest;
-use App\DTO\QuestionWithAnswers;
-use App\Model\CompanyPollHistoryRequest;
+use App\DTO\CompanyPollGetResponse;
+use App\DTO\CompanyPollHistory\CompanyPollHistoryRequest;
+use App\DTO\CompanyPollHistory\CompanyPollHistoryResult;
 use App\Service\PollService;
 use DateTimeImmutable;
 use OpenApi\Annotations as OA;
@@ -61,6 +63,24 @@ class PollController extends AbstractController
         return $this->json(['result' => true]);
     }
 
+    /**
+     * @OA\RequestBody(
+     *      required=true,
+     *      @Model(type=CompanyPollCloseRequest::class)
+     * )
+     * 
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns true if success",
+     *     @Model(type=BooleanResponse::class)
+     * )
+     *  @OA\Response(
+     *     response="default",
+     *     description="An unexpected error response.",
+     *     @Model(type=ErrorResponse::class)
+     * )
+     * @OA\Tag(name="Polls")
+     */
     public function companyPollClose(Request $request): Response
     {
         $request = $request->toArray();
@@ -80,7 +100,7 @@ class PollController extends AbstractController
      * @OA\Response(
      *     response=200,
      *     description="Returns true if success",
-     *     @Model(type=QuestionWithAnswers::class)
+     *     @Model(type=CompanyPollGetResponse::class)
      * )
      *  @OA\Response(
      *     response="default",
@@ -97,12 +117,30 @@ class PollController extends AbstractController
         $data = new CompanyPollGetRequest($companyId, $pollId);
         $questionWithAnswers = $this->pollService->getPoll($data);
         return $this->json(['result' => [
-            'question' => $questionWithAnswers->getQuestion(),
+            'question' => $questionWithAnswers->question,
             'answers' => $questionWithAnswers->getAnswers() 
         ],
         ]);
     }
 
+    /**
+     * @OA\RequestBody(
+     *      required=true,
+     *      @Model(type=CompanyPollAnswerRequest::class)
+     * )
+     * 
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns true if success",
+     *     @Model(type=BooleanResponse::class)
+     * )
+     *  @OA\Response(
+     *     response="default",
+     *     description="An unexpected error response.",
+     *     @Model(type=ErrorResponse::class)
+     * )
+     * @OA\Tag(name="Polls")
+     */
     public function companyPollAnswer(Request $request): Response
     {
         $request = $request->toArray();
@@ -110,10 +148,10 @@ class PollController extends AbstractController
         $pollId = $request['poll_id'];
         $questionId = $request['question_id'];
         foreach ($request['answers'] as $answer) {
-            $answerObj = new Answer($answer['id'], $answer['data']);
+            $answerObj = new DTOCompanyPollAnswer($answer['id'], $answer['data']);
             $answers[] = $answerObj;
         }
-        $data = new CompanyPollAnswer;
+        $data = new CompanyPollAnswerRequest;
         $data->setCompanyId($companyId);
         $data->setPollId($pollId);
         $data->setQuestionId($questionId);
@@ -122,6 +160,24 @@ class PollController extends AbstractController
         return $this->json(['result' => true]);
     }
 
+    /**
+     * @OA\RequestBody(
+     *      required=true,
+     *      @Model(type=CompanyPollHistoryRequest::class)
+     * )
+     * 
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns true if success",
+     *     @Model(type=CompanyPollHistoryResult::class)
+     * )
+     *  @OA\Response(
+     *     response="default",
+     *     description="An unexpected error response.",
+     *     @Model(type=ErrorResponse::class)
+     * )
+     * @OA\Tag(name="Polls")
+     */
     public function companyPollHistory(Request $request): Response
     {
         $request = $request->toArray();
@@ -140,7 +196,7 @@ class PollController extends AbstractController
             };
             foreach ($companyAnswers as $companyAnswer) {
                 if ($companyAnswer->getQuestion()->getId() === $question->getId()) {
-                    $mappedCompanyAnswers[] = ['id' => $companyAnswer->getAnswer()->getId(), 'data' => $companyAnswer->getMeta()];
+                    $mappedCompanyAnswers[] = ['id' => $companyAnswer->getAnswer()->getId(), 'data' => $companyAnswer->getMeta()['data']];
                 };
             };
             $result[] = ['answers' => $answers, 'company_answers' => $mappedCompanyAnswers , 'question' => ['id' => $question->getId(), 'title' => $question->getTitle()]];

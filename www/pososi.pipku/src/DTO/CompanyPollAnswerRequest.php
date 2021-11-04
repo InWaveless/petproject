@@ -1,15 +1,38 @@
 <?php
 declare(strict_types=1);
-namespace App\Model;
+namespace App\DTO;
 
-class CompanyPollAnswer
+use App\DTO\CompanyPollAnswer\Answer;
+use OpenApi\Annotations as OA;
+use Nelmio\ApiDocBundle\Annotation\Model;
+
+class CompanyPollAnswerRequest
 {
+    /**
+     * 
+     * @OA\Property(
+     *   type="array",
+     *   @OA\Items(ref=@Model(type=Answer::class))
+     * )
+     */
     private array $answers;
 
+    /**
+     * 
+     * @OA\Property(property="company_id")
+     */
     private int $companyId;
 
+    /**
+     * 
+     * @OA\Property(property="poll_id")
+     */
     private int $pollId;
 
+    /**
+     * 
+     * @OA\Property(property="question_id")
+     */
     private int $questionId;
 
     public function getAnswers(): array

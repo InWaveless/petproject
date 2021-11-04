@@ -2,31 +2,23 @@
 declare(strict_types=1);
 namespace App\DTO;
 
-use App\Entity\Question;
-use OpenApi\Annotations as OA;
+use App\DTO\Question;
+use App\DTO\Answer;
 use Doctrine\Common\Collections\Collection;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Annotations as OA;
 
-class QuestionWithAnswers
+class CompanyPollGetResponse
 {
-    /**
-     * 
-     * @OA\Property()
-     */
     public Question $question;
 
-    /**
-     * 
-     * @OA\Property()
+    /** 
+     * @OA\Property(
+     *   type="array",
+     *   @OA\Items(ref=@Model(type=Answer::class))
+     * )
      */
     public Collection $answers;
-
-    public function getQuestion(): array
-    {
-        return [
-            'id' => $this->question->getId(),
-            'title' => $this->question->getTitle()
-        ];
-    }
 
     public function getAnswers(): array
     {

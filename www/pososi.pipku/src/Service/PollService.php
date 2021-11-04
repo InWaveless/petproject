@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace App\Service;
 
+use App\DTO\CompanyPollAnswerRequest;
 use App\Entity\Answer;
 use App\Entity\Company;
 use App\Entity\CompanyPoll;
@@ -9,11 +10,12 @@ use App\Entity\CompanyPollAnswer;
 use App\Entity\CompanyPollQuestion;
 use App\Entity\Poll;
 use App\Model\CompanyPollAnswer as ModelCompanyPollAnswer;
-use App\Model\CompanyPollCloseRequest;
+use App\DTO\CompanyPollCloseRequest;
 use App\DTO\CompanyPollCreateRequest;
 use App\DTO\CompanyPollGetRequest;
-use App\Model\CompanyPollHistoryRequest;
-use App\DTO\QuestionWithAnswers;
+use App\DTO\CompanyPollHistory\CompanyPollHistoryRequest;
+use App\DTO\CompanyPollGetResponse;
+use App\DTO\Question;
 use DateInterval;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -83,7 +85,7 @@ class PollService
         $this->entityManager->flush();
     }
 
-    public function getPoll(CompanyPollGetRequest $pollGetRequest): ?QuestionWithAnswers
+    public function getPoll(CompanyPollGetRequest $pollGetRequest): ?CompanyPollGetResponse
     {
         $companyPoll = $this->entityManager->getRepository(CompanyPoll::class)->findOneBy(['id' => $pollGetRequest->pollId, 'company' => $pollGetRequest->companyId]);
         $now = new DateTimeImmutable();
@@ -91,13 +93,16 @@ class PollService
             return null;
         }
         $companyPollQuestion = $this->currentCompanyPollQuestion($companyPoll);
-        $questionWithAnswers = new QuestionWithAnswers;
-        $questionWithAnswers->question = $companyPollQuestion->getQuestion();
+        $questionWithAnswers = new CompanyPollGetResponse;
+        $question = new Question;
+        $question->id = $companyPollQuestion->getQuestion()->getId();
+        $question->title = $companyPollQuestion->getQuestion()->getTitle();
+        $questionWithAnswers->question = $question;
         $questionWithAnswers->answers = $companyPollQuestion->getQuestion()->getAnswers();
         return $questionWithAnswers;
     }
 
-    public function answerQuestion(ModelCompanyPollAnswer $companyPollAnswer): void
+    public function answerQuestion(CompanyPollAnswerRequest $companyPollAnswer): void
     {
         $companyPoll = $this->entityManager->getRepository(CompanyPoll::class)->findOneBy(['id' => $companyPollAnswer->getPollId(), 'company' => $companyPollAnswer->getCompanyId()]);
         $now = new DateTimeImmutable();
@@ -127,9 +132,7 @@ class PollService
             $companyPollAnswerEntity->setCompanyPoll($companyPoll);
             $companyPollAnswerEntity->setAnswer($answer);
             $companyPollAnswerEntity->setQuestion($companyPollQuestion->getQuestion());
-            if ($answersMap[$answer->getId()] !== '') {
-                $companyPollAnswerEntity->setMeta($answersMap[$answer->getId()]);
-            }
+            $companyPollAnswerEntity->setMeta(['data' => $answersMap[$answer->getId()]]);
             $companyPollAnswerEntity->setCreatedAt($now);
             $companyPollAnswers[] = $companyPollAnswerEntity;
         }

@@ -40,7 +40,7 @@ class CompanyPollQuestionRepository extends ServiceEntityRepository
     public function findCurrentQuestion(CompanyPoll $companyPoll): ?CompanyPollQuestion
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.company_poll = :companyPoll')
+            ->andWhere('c.companyPoll = :companyPoll')
             ->andWhere('c.answered = false')
             ->setParameter('companyPoll', $companyPoll)
             ->orderBy('c.id')
